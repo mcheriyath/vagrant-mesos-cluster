@@ -63,10 +63,7 @@ sh run.sh
 #### Install and setup dcos cli
 
 ```
-cd /usr/local/bin/
-curl -O https://downloads.dcos.io/binaries/cli/linux/x86-64/dcos-1.8/dcos
-sudo -i
-cd
+mkdir -p dcos && cd dcos && curl -O https://downloads.dcos.io/dcos-cli/install-legacy.sh && bash ./install-legacy.sh . http://192.168.99.12:5050 && source ./bin/env-setup
 dcos config set core.dcos_url http://192.168.99.11:5050
 dcos config set marathon.url http://192.168.99.11:8080
 dcos marathon app list
@@ -75,6 +72,38 @@ dcos package install --cli cassandra
 
 
 ### Troubleshooting
+
+#### Docker monitoring
+
+1. Setup cAdvisor (on all slave nodes)
+```
+docker run --name cadvisor --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --publish=8080:8080 --detach=true  google/cadvisor:latest
+```
+2. Install influxdb (only on one node)
+```
+docker run -d -p 8083:8083 -p 8086:8086 --name influxdb kubernetes/heapster_influxdb
+```
+3. Create a file /export/heapster/hosts on the same node as in step2
+```
+{"items":[ {"name":"node1","ip":"192.168.99.21"},{"name":"node2","ip":"192.168.99.22"},{"name":"node3","ip":"192.168.99.23"},{"name":"node2","ip":"192.168.99.24"} ] }
+```
+4. Start heapster
+```
+docker run --name heapster --link influxdb:influxdb -v /export/heapster/hosts:/var/run/heapster/hosts -d kubernetes/heapster:v0.14.2 --sink="influxdb:http://influxdb:8086" --source="cadvisor:external?cadvisorPort=8080"
+```
+5. Start Graphana
+```
+docker run -d -p 80:80 -e INFLUXDB_HOST=192.168.99.21 kubernetes/heapster_grafana:v0.7
+```
+Visit : http://192.168.99.21
+
+#### Extended docker monitoring - hostlevel
+```
+curl -s https://s3.amazonaws.com/download.draios.com/stable/install-sysdig | sudo bash
+```
+
+use sysdig or csysdig from the terminal
+
 
 #### Proxy
 
