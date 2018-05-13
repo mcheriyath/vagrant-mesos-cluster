@@ -1,0 +1,18 @@
+#
+# Deploy an app to Marathon
+#
+# Marathon docs: https://mesosphere.github.io/marathon/docs/rest-api.html
+#
+---
+- name: Update Marathon manifest
+  template: src={{manifest}}.j2 dest=/tmp/{{manifest}}
+
+- name: Uninstall Marathon task
+  command: "curl -X DELETE http://{{marathon_host}}:8080/v2/apps/{{app_id}}"
+
+# See https://mesosphere.github.io/marathon/docs/rest-api.html#post-/v2/apps for details
+- name: Install Marathon task
+  command: "curl -X POST http://{{marathon_host}}:8080/v2/apps -d @/tmp/{{manifest}} -H 'Content-type: application/json'"
+
+- name: Clean up marathon manifest
+  command: rm -f /tmp/{{manifest}}

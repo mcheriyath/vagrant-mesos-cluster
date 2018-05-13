@@ -1,0 +1,10 @@
+#
+# Log storages
+#
+---
+- hosts: logs
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: "elk" }

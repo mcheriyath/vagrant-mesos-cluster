@@ -1,0 +1,45 @@
+#
+# Mesos
+# https://open.mesosphere.com/downloads/mesos/#apache-mesos-0.25.0
+#
+---
+- name: Install Mesos
+  yum: pkg=mesos-{{mesos_version}} state=present update_cache=yes
+
+
+- name: Configure Mesos ZK settings
+  shell: echo "zk://{{zk_host1}}:2181,{{zk_host2}}:2181,{{zk_host3}}:2181/mesos" > /etc/mesos/zk
+
+- name: Configure Mesos / Master quorum
+  shell: echo "{{mesos_quorum}}" > /etc/mesos-master/quorum
+  when: mesos_type == "master"
+
+- name: Configure Mesos / Slave containerizers
+  shell: echo "docker,mesos" > /etc/mesos-slave/containerizers
+  when: mesos_type == "slave"
+
+- name: Configure Mesos / Slave deployment time
+  shell: echo "10mins" > /etc/mesos-slave/executor_registration_timeout
+  when: mesos_type == "slave"
+
+- name: Configure Mesos / Slave resources
+  shell: echo "ports(*):[10000-11000]" > /etc/mesos-slave/resources
+  when: mesos_type == "slave"
+
+
+- name: Enable Mesos Master
+  service: name=mesos-master state=started enabled=yes
+  when: mesos_type == "master"
+
+- name: Disable Mesos Slave
+  service: name=mesos-slave state=stopped enabled=no
+  when: mesos_type == "master"
+
+
+- name: Enable Mesos Master
+  service: name=mesos-master state=stopped enabled=no
+  when: mesos_type == "slave"
+
+- name: Disable Mesos Slave
+  service: name=mesos-slave state=started enabled=yes
+  when: mesos_type == "slave"

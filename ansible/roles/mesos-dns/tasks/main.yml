@@ -1,0 +1,36 @@
+#
+# MesosDNS
+#
+# https://mesosphere.github.io/mesos-dns/docs/tutorial-systemd.html
+#
+---
+- name: Download MesosDNS binary
+  get_url: url=https://github.com/mesosphere/mesos-dns/releases/download/{{mesos_dns_version}}/mesos-dns-{{mesos_dns_version}}-linux-amd64
+    dest=/usr/bin/mesos-dns mode=0550
+
+- name: Configure MesosDNS (check folder)
+  file: path=/etc/mesos-dns state=directory
+
+- name: Configure MesosDNS (copy config)
+  template:
+    src: config.json.j2
+    dest: /etc/mesos-dns/config.json
+
+- name: Set up MesosDNS service
+  copy: src=mesos-dns.service dest=/etc/systemd/system mode=0644
+
+
+- name: Set up local DNS
+  copy: src=resolv.conf dest=/etc/resolv.conf mode=0644
+
+- name: Disable DNS updates by NetworkManager
+  copy: src=NetworkManager.conf dest=/etc/NetworkManager/NetworkManager.conf mode=0644
+
+- name: Adding DNS setting to LO interface (to prevent NM from reverting)
+  lineinfile: dest=/etc/sysconfig/network-scripts/ifcfg-lo
+                insertafter=EOF
+                line="PEERDNS=yes\nDNS1=127.0.0.1"
+
+
+- name: Enable MesosDNS service
+  service: name=mesos-dns state=started enabled=yes

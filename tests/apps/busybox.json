@@ -1,0 +1,34 @@
+{
+  "id": "/busybox",
+  "cmd":"while sleep 10; do date -u +%T; done",
+  "instances": 2,
+  "cpus": 0.1,
+  "mem": 32,
+  "disk": 0,
+  "executor": "",
+  "constraints": [],
+  "uris": [],
+  "storeUrls": [],
+  "requirePorts": false,
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "busybox",
+      "network": "BRIDGE",
+      "portMappings": [],
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [],
+  "dependencies": [],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  }
+}

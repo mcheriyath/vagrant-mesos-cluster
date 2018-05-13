@@ -1,0 +1,15 @@
+#
+# Zookeeper
+#
+---
+- name: Install Zookeeper
+  yum: pkg=mesosphere-zookeeper state=latest update_cache=yes
+
+- name: Configure Zookeeper ID
+  lineinfile: dest=/var/lib/zookeeper/myid create=yes line="{{zk_id}}"
+
+- name: Configure Zookeeper hosts
+  template: src=zoo.cfg.j2 dest=/etc/zookeeper/conf/zoo.cfg
+
+- name: Enable Zookeeper
+  service: name=zookeeper state=started enabled=yes

@@ -1,0 +1,8 @@
+---
+galaxy_info:
+  description: Marathon installation
+  min_ansible_version: 1.9.4
+  platforms:
+  - name: CentOs
+dependencies:
+  - { role: "os" }

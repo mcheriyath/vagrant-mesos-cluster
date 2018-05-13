@@ -1,0 +1,19 @@
+#
+# Deployment from user's machine
+#
+---
+- hosts: localhost
+  connection: local
+  vars:
+    - marathon_host: 192.168.99.11
+    - bamboo_host: 192.168.99.11
+    - app_id: /service/fibonacci
+    - manifest: springboot.json
+    - memory: 256.0
+    - image_name: krestjaninoff/fibonacci-service
+    - image_version: latest
+    - service_name: fibonacci-service
+    - service_port: 8099
+    - instances: 1
+  roles:
+    - deployment

@@ -1,0 +1,10 @@
+#
+# OS set up
+#
+---
+- name: Set up DNS through the "hosts" file
+  template: src=hosts.j2 dest=/etc/hosts
+
+# http://downloads.mesosphere.io/master/centos/7/mesos-0.25.0-0.2.70.centos701406.x86_64.rpm
+- name: Install Mesosphere YUM repo
+  yum: name=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present

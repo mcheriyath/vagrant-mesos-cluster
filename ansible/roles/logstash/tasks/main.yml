@@ -1,0 +1,21 @@
+#
+# LogStash
+#
+---
+- name: Bootstrap YUM (add ELK repo)
+  copy: src=elk.repo
+        dest=/etc/yum.repos.d/
+        owner=root group=root mode=0644
+
+- name: UnInstall LogStash (if any)
+  ignore_errors: yes
+  yum: pkg=logstash state=absent
+
+- name: Install LogStash packages
+  yum: pkg=logstash,java state=present update_cache=yes
+
+- name: Create LogStash config file
+  template: src=logstash.conf.j2 dest={{logstash_config_dir}}/logstash.conf backup=yes mode=0644
+
+- name: Enable Logstash
+  service: name=logstash state=restarted enabled=yes sleep=5

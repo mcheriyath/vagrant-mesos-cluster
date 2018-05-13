@@ -1,0 +1,53 @@
+{
+  "id": "{{app_id}}",
+
+  "cpus": 1.0,
+  "mem": {{memory}},
+  "instances": {{instances}},
+
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "{{image_name}}:{{image_version}}",
+      "forcePullImage": true,
+      "network": "BRIDGE",
+      "portMappings": [
+        { "containerPort": {{service_port}}, "hostPort": 0, "servicePort": 0, "protocol": "tcp" }
+      ],
+      "parameters": [
+        { "key": "dns", "value": "172.17.42.1"},
+        { "key": "env", "value": "LOGSTASH_HOST=172.17.42.1"},
+        { "key": "env", "value": "dns.enabled=true"},
+        { "key": "env", "value": "dns.host=172.17.42.1"},
+        { "key": "env", "value": "dns.port=8123"},
+        { "key": "env", "value": "srv.name={{service_name}}"}
+      ]
+    }
+  },
+
+  "backoffFactor": 2,
+  "backoffSeconds": 30,
+  "maxLaunchDelaySeconds": 3600,
+
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "path": "/healthcheck/",
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 30,
+      "maxConsecutiveFailures": 3
+    }
+  ],
+
+  "upgradeStrategy": {
+      "minimumHealthCapacity": 0.5,
+      "maximumOverCapacity": 0.5
+  },
+
+  "labels": {
+    "HAPROXY_GROUP": "external",
+    "HAPROXY_0_PORT": "80",
+    "HAPROXY_0_PATH": "/fib"
+  }
+}

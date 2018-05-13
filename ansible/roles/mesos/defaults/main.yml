@@ -1,0 +1,9 @@
+mesos_version: 0.28.0
+
+mesos_type: master
+
+zk_host1: localhost
+zk_host2: localhost
+zk_host3: localhost
+
+mesos_quorum: 2

@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: alfabank
+  description: "Роль для установки образа LogStash"
+  company: alfabank
+
+  license: license
+  min_ansible_version: 1.7
+
+dependencies: []

@@ -1,0 +1,4 @@
+mesos_dns_version: v0.5.1
+zk_host1: XXX
+zk_host2: XXX
+zk_host3: XXX

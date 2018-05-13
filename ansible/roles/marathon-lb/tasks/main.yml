@@ -1,0 +1,11 @@
+#
+# Marathon LB
+#
+# See https://github.com/mesosphere/marathon-lb
+#
+---
+- name: Install Marathon LB
+  command: sudo docker run -d --restart=always
+    --net=host -e PORTS=80
+    --name marathon-lb
+    mesosphere/marathon-lb:{{marathon_lb_version}} sse --marathon=http://master.mesos:8080 --group external

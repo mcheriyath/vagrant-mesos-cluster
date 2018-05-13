@@ -1,0 +1,8 @@
+---
+galaxy_info:
+  description: ElasticSearch and Kibana installation
+  min_ansible_version: 1.9.4
+  platforms:
+  - name: CentOs
+dependencies:
+  - { role: "docker" }

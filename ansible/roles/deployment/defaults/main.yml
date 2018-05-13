@@ -1,0 +1,14 @@
+marathon_host: "UNDEFINED"
+bamboo_host: "UNDEFINED"
+
+app_id: "/service/APP_ID"
+manifest: "springboot.json"
+
+memory: 256.0
+
+image_name: "IMAGE_NAME"
+image_version: "IMAGE_VERSION"
+service_name: "SERVICE_NAME"
+service_port: "SERVICE_PORT"
+
+instances: 4

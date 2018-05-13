@@ -1,0 +1,33 @@
+{
+  "id": "/curl",
+  "cmd": "while sleep 10; do curl -sS -m 5 -IL http://172.17.42.1:15000; done",
+  "instances": 2,
+  "cpus": 0.1,
+  "mem": 32,
+  "disk": 0,
+  "executor": "",
+  "constraints": [],
+  "uris": [],
+  "storeUrls": [],
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "appropriate/curl",
+      "network": "BRIDGE",
+      "portMappings": [],
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": false
+    }
+  },
+  "healthChecks": [],
+  "dependencies": [],
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  }
+}
