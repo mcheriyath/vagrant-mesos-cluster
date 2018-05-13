@@ -68,12 +68,8 @@ curl -O https://downloads.dcos.io/binaries/cli/linux/x86-64/dcos-1.8/dcos
 sudo -i
 cd
 dcos config set core.dcos_url http://192.168.99.11:5050
-dcos auth login
-dcos auth --info
-dcos marathon info
-dcos marathon --info
+dcos config set marathon.url http://192.168.99.11:8080
 dcos marathon app list
-dcos auth login
 dcos package install --cli cassandra
 ```
 

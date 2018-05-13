@@ -82,24 +82,24 @@ Vagrant.configure(2) do |config|
   end
 
   # Kibana to be available at: http://192.168.99.24:5601
-  HOSTS['logs'].each_with_index do |host, index|
-    config.vm.define host[0] do |machine|
-      machine.vm.hostname = host[0]
-      machine.vm.network "private_network", :ip => host[1]
+  #HOSTS['logs'].each_with_index do |host, index|
+  #  config.vm.define host[0] do |machine|
+  #    machine.vm.hostname = host[0]
+  #    machine.vm.network "private_network", :ip => host[1]
 
-      machine.vm.provider "virtualbox" do |vb|
-        vb.memory = "2048"
-        vb.cpus = "1"
-      end
+  #   machine.vm.provider "virtualbox" do |vb|
+  #      vb.memory = "2048"
+  #      vb.cpus = "1"
+  #    end
 
-      machine.vm.provision "ansible" do |ansible|
-          ansible.playbook = "ansible/log.yml"
-          ansible.groups = { "logs" => HOSTS['logs'].keys }
-          ansible.extra_vars = {
-            hosts: HOSTS['logs']
-          }
-      end
-    end
-  end
+  #    machine.vm.provision "ansible" do |ansible|
+  #        ansible.playbook = "ansible/log.yml"
+  #        ansible.groups = { "logs" => HOSTS['logs'].keys }
+  #        ansible.extra_vars = {
+  #          hosts: HOSTS['logs']
+  #        }
+  #    end
+  #  end
+  #end
 
 end
